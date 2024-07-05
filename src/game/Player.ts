@@ -1,7 +1,7 @@
 import { Drawable, Game } from "./Game";
 
 export class Player implements Drawable {
-    x: number ;
+    x: number;
     readonly y: number;
     game: Game;
     readonly width = 50;

@@ -35,11 +35,11 @@ export class Ball implements Drawable {
     flipX() {
         this.vx = -this.vx;
     }
-    updateXVelocity(barSide: 'left' | 'right') {
+    updateXVelocity(barSide: "left" | "right") {
         const amount = Math.random() * 5;
         let direction = this.vx > 0 ? 1 : -1;
-        if(this.vx === 0) {
-            direction = barSide === 'left' ? -1 : 1;
+        if (this.vx === 0) {
+            direction = barSide === "left" ? -1 : 1;
         }
         this.vx = amount * direction;
     }

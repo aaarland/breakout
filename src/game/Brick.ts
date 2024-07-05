@@ -8,7 +8,8 @@ export class Brick implements Drawable {
         public y: number,
         public color: string,
         public width: number,
-    ) { }
+        public score: number,
+    ) {}
     draw(): void {
         const ctx = this.game.ctx;
         ctx.fillStyle = this.color;

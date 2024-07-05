@@ -15,8 +15,10 @@ const BRICK_COUNT = 10;
 
 class Score implements Drawable {
     score: number;
+    multiplier: number;
     constructor(public game: Game) {
         this.score = 0;
+        this.multiplier = 1;
     }
     draw(): void {
         this.game.ctx.font = "32px sans-serif";
@@ -29,6 +31,12 @@ class Score implements Drawable {
     }
     incrementScore(brick: Brick) {
         this.score += brick.score;
+    }
+    resetMultiplier() {
+        this.multiplier = 1;
+    }
+    addMultiplier() {
+        this.multiplier *= 2;
     }
 }
 export interface Drawable {
@@ -116,8 +124,10 @@ export class Game {
                 ball.updateXVelocity("right");
             }
             ball.flipY();
+            this.score.resetMultiplier();
         } else if (ball.y + ball.vy > this.player.y + 10) {
             ball.reset();
+            this.score.resetMultiplier();
         }
         const cords = this.ballHitBrick();
         if (cords !== null) {
@@ -131,6 +141,7 @@ export class Game {
                 ball.updateXVelocity("right");
             }
             this.score.incrementScore(brick);
+            this.score.addMultiplier();
             this.bricks[cords.y][cords.x] = null;
         }
     }

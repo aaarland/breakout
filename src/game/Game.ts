@@ -92,9 +92,7 @@ export class Game {
             }
         }
         this.score.draw();
-
         this.moveBall();
-
         this.start();
     }
 
@@ -129,7 +127,13 @@ export class Game {
             ball.reset();
             this.score.resetMultiplier();
         }
-        const cords = this.ballHitBrick();
+        const {cords, nullCount} = this.updateBricks();
+        if (nullCount === this.bricks.flat().length) {
+                this.fillBricks();
+                ball.reset();
+                this.score.resetMultiplier();
+                return;
+        }
         if (cords !== null) {
             const brick = this.bricks[cords.y][cords.x];
             if (brick === null) return;
@@ -145,29 +149,25 @@ export class Game {
             this.bricks[cords.y][cords.x] = null;
         }
     }
-    ballHitBrick() {
-        for (let y = 0; y < this.bricks.length; y++) {
-            for (let x = 0; x < this.bricks[y].length; x++) {
+    updateBricks() {
+        let nullCount = 0;
+        let cords = null;
+        for (let y = this.bricks.length - 1; y >= 0; y--) {
+            for (let x = this.bricks[y].length - 1; x >= 0; x--) {
                 const brick = this.bricks[y][x];
-                if (brick === null) continue;
+                if (brick === null) {
+                    nullCount++;
+                    continue;
+                }
                 if (
                     this.ball.x < brick.x * brick.width + brick.width &&
                     this.ball.x >= brick.x * brick.width &&
                     this.ball.y <= brick.y * brick.height + brick.height
                 )
-                    return { y, x };
+                    cords = { y, x };
             }
         }
-        return null;
-    }
-
-    resetBricks() {
-        for (const row of this.bricks) {
-            for (const brick of row) {
-                if (brick !== null) return;
-            }
-        }
-        this.fillBricks();
+        return {cords, nullCount};
     }
 
     start() {

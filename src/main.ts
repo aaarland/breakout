@@ -40,8 +40,8 @@ class Ball implements Drawable {
     x: number;
     y: number;
     radius = 5;
-    vx = 2;
-    vy = 2;
+    vx = 5;
+    vy = 5;
     constructor(game: Game) {
         this.game = game;
         this.x = game.canvas.width / 2;
@@ -85,7 +85,7 @@ class Player implements Drawable {
             this.move(this.x + 10 * direction);
         });
         this.game = game;
-        this.y = this.game.canvas.height - 30;
+        this.y = this.game.canvas.height - this.game.canvas.height / 4;
     }
     move(x: number) {
         this.x = x;
@@ -93,12 +93,7 @@ class Player implements Drawable {
 
     draw() {
         this.game.ctx.fillStyle = "red";
-        this.game.ctx.fillRect(
-            this.x - this.width,
-            this.y,
-            this.width,
-            5,
-        );
+        this.game.ctx.fillRect(this.x - this.width, this.y, this.width, 5);
     }
 }
 
@@ -177,14 +172,14 @@ class Game {
         if (ball.y + ball.vy < ball.radius) {
             ball.flipY();
         }
-        if (ball.y + ball.vy > this.canvas.height - ball.radius) {
-            ball.reset();
-        } else if (
+        if (
             ball.y + ball.radius >= this.player.y &&
             ball.x <= this.player.x &&
             ball.x >= this.player.x - this.player.width
         ) {
             ball.flipY();
+        } else if (ball.y + ball.vy > this.player.y + 10) {
+            ball.reset();
         }
         const cords = this.ballHitBrick();
         if (cords !== null) {
@@ -202,7 +197,7 @@ class Game {
                     this.ball.x >= brick.x * brick.width &&
                     this.ball.y <= brick.y * brick.height + brick.height
                 )
-                    return {y, x};
+                    return { y, x };
             }
         }
         return null;

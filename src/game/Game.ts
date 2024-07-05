@@ -121,11 +121,16 @@ export class Game {
         }
         const cords = this.ballHitBrick();
         if (cords !== null) {
-            ball.flipY();
             const brick = this.bricks[cords.y][cords.x];
-            if (brick !== null) {
-                this.score.incrementScore(brick);
+            if (brick === null) return;
+            ball.flipY();
+            const half = brick.width / 2;
+            if (ball.x < brick.x * brick.width + half) {
+                ball.updateXVelocity("left");
+            } else {
+                ball.updateXVelocity("right");
             }
+            this.score.incrementScore(brick);
             this.bricks[cords.y][cords.x] = null;
         }
     }

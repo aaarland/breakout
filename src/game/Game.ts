@@ -68,7 +68,7 @@ export class Game {
                     y,
                     color,
                     this.canvas.width / BRICK_COUNT,
-                    100 * (colors.length - y ),
+                    100 * (colors.length - y),
                 );
             }
         }
@@ -146,9 +146,12 @@ export class Game {
     }
 
     resetBricks() {
-        if (this.bricks.flat().every((brick) => brick === null)) {
-            this.fillBricks();
+        for (const row of this.bricks) {
+            for (const brick of row) {
+                if (brick !== null) return;
+            }
         }
+        this.fillBricks();
     }
 
     start() {

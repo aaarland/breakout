@@ -19,10 +19,12 @@ class Score implements Drawable {
         this.score = 0;
     }
     draw(): void {
+        this.game.ctx.font = "32px sans-serif";
+        this.game.ctx.fillStyle = "white";
         this.game.ctx.fillText(
             `Score: ${this.score}`,
             20,
-            this.game.canvas.height - 20,
+            this.game.canvas.height - 80,
         );
     }
     incrementScore(brick: Brick) {
@@ -66,7 +68,7 @@ export class Game {
                     y,
                     color,
                     this.canvas.width / BRICK_COUNT,
-                    100 * (y + 1),
+                    100 * (colors.length - y ),
                 );
             }
         }
